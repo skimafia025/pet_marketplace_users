@@ -10,6 +10,7 @@ type User struct {
 	ID        uint      `json:"UUID" gorm:"primaryKey"`
 	EMAIL     string    `json:"EMAIL" gorm:"unique;not null"`
 	PASSWORD  string    `json:"PASSWORD" gorm:"not null"`
+	Name      string    `json:"name" gorm:"not null"`
 	CreatedAt time.Time `json:"created_at"`
 	UpdatedAt time.Time `json:"updated_at"`
 }

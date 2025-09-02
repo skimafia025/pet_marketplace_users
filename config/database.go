@@ -3,6 +3,7 @@ package config
 import (
 	"log"
 	"os"
+	"pet_marketplace_users/models"
 
 	"github.com/joho/godotenv"
 	"gorm.io/driver/postgres"
@@ -28,5 +29,7 @@ func ConnectDB() {
 	if err != nil {
 		log.Fatal("Не удалось подключиться к БД:", err)
 	}
+
+	DB.AutoMigrate(&models.User{})
 
 }
