@@ -1,0 +1,51 @@
+version: '3.8'
+
+services:
+  # База данных PostgreSQL
+  postgres:
+    image: postgres:15
+    container_name: pet_marketplace_db
+    environment:
+      POSTGRES_DB: pet_marketplace_users
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_HOST_AUTH_METHOD: trust
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - pet_network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+
+  backend:
+    build: .
+    container_name: pet_marketplace_backend
+    environment:
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_NAME=pet_marketplace_users
+      - DB_USER=postgres
+      - DB_PASSWORD=postgres
+      - PORT=8080
+    ports:
+      - "8080:8080"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - pet_network
+    restart: unless-stopped
+
+networks:
+  pet_network:
+    driver: bridge
+
+volumes:
+  postgres_data:

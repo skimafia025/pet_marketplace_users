@@ -1,0 +1,10 @@
+.git
+Dockerfile
+.dockerignore
+*.exe
+*.dll
+*.so
+*.dylib
+.env
+logs/
+tmp/
